@@ -1,0 +1,461 @@
+// main: ../main.scss
+/*--------------------------------------------------------------
+# Travel About Section
+--------------------------------------------------------------*/
+.travel-about {
+  .intro-content {
+    h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--heading-color);
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+
+      @media (max-width: 768px) {
+        font-size: 2.2rem;
+      }
+    }
+
+    .lead {
+      font-size: 1.3rem;
+      color: color-mix(in srgb, var(--default-color), transparent 20%);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+  }
+
+  .hero-image {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+
+    img {
+      transition: transform 0.5s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    .floating-stats {
+      position: absolute;
+      bottom: -30px;
+      right: -30px;
+      display: flex;
+      gap: 1rem;
+
+      @media (max-width: 768px) {
+        bottom: -20px;
+        right: -20px;
+        gap: 0.5rem;
+      }
+
+      .stat-item {
+        background: var(--surface-color);
+        padding: 1.5rem 1rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color), transparent 85%);
+        min-width: 80px;
+
+        @media (max-width: 768px) {
+          padding: 1rem 0.8rem;
+          min-width: 70px;
+        }
+
+        .number {
+          display: block;
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: var(--accent-color);
+          line-height: 1;
+
+          @media (max-width: 768px) {
+            font-size: 1.4rem;
+          }
+        }
+
+        .label {
+          display: block;
+          font-size: 0.8rem;
+          color: color-mix(in srgb, var(--default-color), transparent 40%);
+          font-weight: 500;
+          margin-top: 0.3rem;
+        }
+      }
+    }
+  }
+
+  .story-content {
+    .story-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: color-mix(in srgb, var(--accent-color), transparent 90%);
+      color: var(--accent-color);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+
+    h3 {
+      font-size: 2.5rem;
+      color: var(--heading-color);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: color-mix(in srgb, var(--default-color), transparent 15%);
+      margin-bottom: 1.5rem;
+    }
+
+    .mission-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface-color);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      border-left: 5px solid var(--accent-color);
+      box-shadow: 0 5px 20px color-mix(in srgb, var(--default-color), transparent 92%);
+
+      .mission-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .mission-text {
+        h4 {
+          color: var(--heading-color);
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          font-size: 1.2rem;
+        }
+
+        p {
+          margin: 0;
+          font-style: italic;
+          font-size: 1rem;
+          color: color-mix(in srgb, var(--default-color), transparent 20%);
+        }
+      }
+    }
+  }
+
+  .features-grid {
+    .section-header {
+      h3 {
+        font-size: 2.5rem;
+        color: var(--heading-color);
+        font-weight: 700;
+        margin-bottom: 1rem;
+
+        @media (max-width: 768px) {
+          font-size: 2rem;
+        }
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        margin: 0;
+      }
+    }
+
+    .feature-card {
+      height: 280px;
+      position: relative;
+      perspective: 1000px;
+      cursor: pointer;
+
+      .feature-front,
+      .feature-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        transition: transform 0.6s ease;
+        border-radius: 20px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .feature-front {
+        background: var(--surface-color);
+        box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color), transparent 88%);
+
+        .feature-icon {
+          width: 80px;
+          height: 80px;
+          background: color-mix(in srgb, var(--accent-color), transparent 85%);
+          color: var(--accent-color);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2.2rem;
+          margin: 0 auto 1.5rem;
+          transition: all 0.3s ease;
+        }
+
+        h4 {
+          font-size: 1.4rem;
+          color: var(--heading-color);
+          font-weight: 600;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          color: color-mix(in srgb, var(--default-color), transparent 25%);
+          font-size: 1rem;
+          margin: 0;
+          line-height: 1.5;
+        }
+      }
+
+      .feature-back {
+        background: var(--accent-color);
+        transform: rotateY(180deg);
+
+        p {
+          color: var(--contrast-color);
+          font-size: 1.1rem;
+          line-height: 1.6;
+          margin: 0;
+        }
+      }
+
+      &:hover {
+        .feature-front {
+          transform: rotateY(180deg);
+        }
+
+        .feature-back {
+          transform: rotateY(0deg);
+        }
+      }
+    }
+  }
+
+  .journey-timeline {
+    .timeline-header {
+      h3 {
+        font-size: 2.5rem;
+        color: var(--heading-color);
+        font-weight: 700;
+        margin-bottom: 1rem;
+
+        @media (max-width: 768px) {
+          font-size: 2rem;
+        }
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        margin: 0;
+      }
+    }
+
+    .timeline-container {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 0;
+
+      .timeline-milestone {
+        position: relative;
+        margin-bottom: 4rem;
+
+        @media (max-width: 768px) {
+          margin-bottom: 3rem;
+        }
+
+        .milestone-marker {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: var(--accent-color);
+          color: var(--contrast-color);
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 1.1rem;
+          box-shadow: 0 5px 20px color-mix(in srgb, var(--accent-color), transparent 60%);
+          z-index: 2;
+
+          @media (max-width: 768px) {
+            position: relative;
+            left: auto;
+            top: auto;
+            transform: none;
+            margin: 0 auto 1rem;
+            width: 80px;
+            height: 80px;
+          }
+        }
+
+        .milestone-content {
+          background: var(--surface-color);
+          padding: 2rem;
+          border-radius: 15px;
+          box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color), transparent 85%);
+
+          @media (min-width: 769px) {
+            width: 40%;
+            margin-top: -50px;
+          }
+
+          h4 {
+            color: var(--heading-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+          }
+
+          p {
+            color: color-mix(in srgb, var(--default-color), transparent 20%);
+            line-height: 1.6;
+            margin: 0;
+          }
+        }
+
+        &:nth-child(odd) {
+          @media (min-width: 769px) {
+            .milestone-content {
+              margin-left: 0;
+            }
+          }
+        }
+
+        &:nth-child(even) {
+          @media (min-width: 769px) {
+            .milestone-content {
+              margin-left: 60%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .cta-banner {
+    background: linear-gradient(135deg,
+        color-mix(in srgb, var(--accent-color), transparent 10%),
+        color-mix(in srgb, var(--heading-color), transparent 10%)),
+      url('assets/img/travel/showcase-12.webp') center/cover;
+    border-radius: 25px;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+
+    .cta-overlay {
+      background: color-mix(in srgb, var(--accent-color), transparent 20%);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+
+      @media (max-width: 768px) {
+        padding: 2rem;
+      }
+    }
+
+    .cta-content {
+      text-align: center;
+      color: var(--contrast-color);
+
+      h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--contrast-color);
+
+        @media (max-width: 768px) {
+          font-size: 2rem;
+        }
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+          padding: 1rem 2rem;
+          font-weight: 600;
+          border-radius: 50px;
+          font-size: 1.1rem;
+          transition: all 0.3s ease;
+          text-decoration: none;
+          border: 2px solid transparent;
+
+          &.btn-primary {
+            background: var(--contrast-color);
+            color: var(--accent-color);
+
+            &:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 8px 25px color-mix(in srgb, var(--contrast-color), transparent 60%);
+            }
+          }
+
+          &.btn-outline {
+            background: transparent;
+            color: var(--contrast-color);
+            border-color: var(--contrast-color);
+
+            &:hover {
+              background: var(--contrast-color);
+              color: var(--accent-color);
+              transform: translateY(-2px);
+            }
+          }
+        }
+      }
+    }
+  }
+}

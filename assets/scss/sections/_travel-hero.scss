@@ -1,0 +1,203 @@
+// main: ../main.scss
+/*--------------------------------------------------------------
+# Travel Hero Section
+--------------------------------------------------------------*/
+.travel-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 60px 0;
+
+  .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+        color-mix(in srgb, var(--background-color), transparent 60%) 0%,
+        color-mix(in srgb, var(--background-color), transparent 80%) 50%,
+        color-mix(in srgb, var(--background-color), transparent 90%) 100%);
+    z-index: 1;
+  }
+
+  .hero-text {
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      .btn {
+        padding: 12px 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+
+        &.btn-primary {
+          background-color: var(--accent-color);
+          border-color: var(--accent-color);
+          color: var(--contrast-color);
+
+          &:hover {
+            background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+            border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+            transform: translateY(-2px);
+          }
+        }
+
+        &.btn-outline {
+          background-color: transparent;
+          border: 2px solid var(--contrast-color);
+          color: var(--contrast-color);
+
+          &:hover {
+            background-color: var(--accent-color);
+            color: var(--contrast-color);
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+          }
+        }
+      }
+    }
+  }
+
+  .booking-form-wrapper {
+    .booking-form {
+      background-color: var(--surface-color);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color), transparent 85%);
+      backdrop-filter: blur(10px);
+
+      .form-title {
+        color: var(--heading-color);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      label {
+        color: var(--heading-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .form-control,
+      .form-select {
+        border: 2px solid color-mix(in srgb, var(--default-color), transparent 80%);
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 14px;
+        color: var(--default-color);
+        background-color: var(--surface-color);
+        transition: all 0.3s ease;
+
+        &:focus {
+          border-color: var(--accent-color);
+          box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accent-color), transparent 75%);
+          outline: none;
+        }
+
+        &::placeholder {
+          color: color-mix(in srgb, var(--default-color), transparent 50%);
+        }
+      }
+
+      .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+        padding: 12px 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+          border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    .hero-text {
+      text-align: center;
+      margin-bottom: 3rem;
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+    }
+
+    .booking-form {
+      margin-top: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-text {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .hero-buttons {
+        .btn {
+          display: block;
+          width: 100%;
+          margin-bottom: 1rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .booking-form-wrapper {
+      .booking-form {
+        padding: 1.5rem;
+      }
+    }
+  }
+}
