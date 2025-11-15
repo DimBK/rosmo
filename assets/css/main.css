@@ -23,8 +23,8 @@
 :root { 
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #051e23; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #1c4b56; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #008cad; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --heading-color: #305669; /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #8ABEB9; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
@@ -36,7 +36,7 @@
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
   --nav-dropdown-color: #051e23; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #008cad; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-dropdown-hover-color: #8ABEB9; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -2277,21 +2277,25 @@ section,
 
 .call-to-action .visual-element {
   position: relative;
-  border-radius: 25px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .call-to-action .visual-element .hero-image {
   width: 100%;
-  height: 500px;
+  height: 400px;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 0.8s ease;
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {
   .call-to-action .visual-element .hero-image {
-    height: 350px;
+    height: 300px;
   }
 }
 
@@ -2300,32 +2304,72 @@ section,
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
   padding: 2rem;
   display: flex;
   justify-content: space-around;
+  backdrop-filter: blur(5px);
 }
 
 .call-to-action .visual-element .image-overlay .stat-item {
   text-align: center;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .call-to-action .visual-element .image-overlay .stat-item .stat-number {
   display: block;
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 1.75rem;
+  font-weight: 700;
   color: var(--contrast-color);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .call-to-action .visual-element .image-overlay .stat-item .stat-label {
-  font-size: 0.9rem;
-  color: color-mix(in srgb, var(--contrast-color), transparent 20%);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 500;
 }
 
 .call-to-action .visual-element:hover .hero-image {
-  transform: scale(1.05);
+  transform: scale(1.03);
+}
+
+.call-to-action .visual-element:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Optional: Glass morphism effect untuk extra modernity */
+.call-to-action .visual-element.glass-effect {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.05) 50%, 
+    rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Minimal version untuk yang lebih sederhana */
+.call-to-action .visual-element.minimal {
+  background: transparent;
+  backdrop-filter: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.call-to-action .visual-element.minimal .image-overlay {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+}
+
+.call-to-action .visual-element.minimal .image-overlay .stat-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .call-to-action .newsletter-section {
@@ -6080,12 +6124,45 @@ section,
   line-height: 1.2;
   margin-bottom: 2rem;
   color: var(--heading-color);
+  width: 100%; /* Pastikan memenuhi lebar container */
+  max-width: none; /* Hilangkan batas maksimal lebar */
+  word-wrap: break-word; /* Handle kata yang panjang */
+  overflow-wrap: break-word; /* Alternatif untuk browser modern */
+}
+
+/* Untuk layout grid/flex yang mungkin membatasi lebar */
+.blog-details .article-header {
+  width: 100%;
+  grid-column: 1 / -1; /* Jika menggunakan grid, span semua kolom */
+}
+
+/* Jika parent container membatasi lebar */
+.blog-details .article-header .title {
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 @media (max-width: 768px) {
   .blog-details .article-header .title {
     font-size: 2.2rem;
+    width: 100%; /* Tetap full width di mobile */
+    max-width: 100%;
   }
+}
+
+/* Optional: Jika perlu menghilangkan constraint dari parent */
+.blog-details .article-header {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Untuk memastikan tidak ada padding/margin yang membatasi */
+.blog-details .article-header .title {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .blog-details .article-header .article-meta {
