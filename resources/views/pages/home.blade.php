@@ -19,9 +19,6 @@
         <div class="row align-items-center">
           <div class="col-lg-12">
             <div class="hero-text" data-aos="fade-up" data-aos-delay="100">
-              <div class="mb-2">
-                <img src="{{ asset('assets/img/apple-touch-icon.png') }}" alt="Logo ROSMO" style="height: 30px;">
-              </div>
               <span class="tagline">Kementerian Kehutanan</span>
               <h1 class="hero-title">Biro Sumber Daya Manusia dan Organisasi</h1>
               <p class="hero-subtitle">Rosmo hadir untuk menyajikan informasi terkini seputar kepegawaian, kegiatan biro, regulasi, statistik SDM, hingga inovasi layanan digital yang sedang dikembangkan.</p>
@@ -213,7 +210,7 @@
 
               <!-- Button yang diperbarui -->
               <div class="dashboard-actions mt-4">
-                <a href="#" class="btn btn-dashboard-primary">
+                <a href="{{ route('statistik.index') }}" class="btn btn-dashboard-primary">
                   <i class="bi bi-bar-chart-fill me-2"></i>
                   Akses Dashboard
                 </a>

@@ -19,10 +19,13 @@
                         <small class="text-muted">Urutan: {{ $gallery->sort_order }}</small>
                     </div>
                     <div class="card-footer p-2 bg-white border-0">
-                        <a href="{{ route('admin.galleries.edit', $gallery) }}" class="btn btn-sm btn-info w-100 mb-1">Edit</a>
+                        <div class="d-flex gap-1 mb-1">
+                            <a href="{{ route('admin.galleries.photos.index', $gallery) }}" class="btn btn-sm btn-primary w-100">Foto</a>
+                            <a href="{{ route('admin.galleries.edit', $gallery) }}" class="btn btn-sm btn-info w-100">Edit</a>
+                        </div>
                         <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger w-100" onclick="return confirm('Hapus galeri ini?')">Delete</button>
+                            <button class="btn btn-sm btn-danger w-100" onclick="return confirm('Hapus album ini?')">Hapus</button>
                         </form>
                     </div>
                 </div>

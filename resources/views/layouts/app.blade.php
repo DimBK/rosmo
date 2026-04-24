@@ -29,6 +29,8 @@
 
   <!-- Main CSS File -->
   <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+  
+  @stack('styles')
 
 </head>
 
@@ -80,7 +82,7 @@
                 @endforelse
               </ul>
           </li>
-          <li><a href="{{ url('gallery') }}">Statistik</a></li>
+          <li><a href="{{ route('statistik.index') }}" class="{{ request()->routeIs('statistik.*') ? 'active' : '' }}">Statistik</a></li>
           <li><a href="{{ url('blog') }}">Regulasi</a></li>
           <li class="dropdown"><a href="#"><span>More Pages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
@@ -216,6 +218,8 @@
 
   <!-- Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+  
+  @stack('scripts')
 
 </body>
 

@@ -19,11 +19,10 @@
       </div>
     </div><!-- End Page Title -->
 
+    @if($randomPhotos->isNotEmpty())
     <!-- Gallery Slider Section -->
     <section id="gallery-slider" class="gallery-slider section">
-
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
         <div class="gallery-container">
           <div class="swiper init-swiper">
             <script type="application/json" class="swiper-config">
@@ -70,11 +69,12 @@
               }
             </script>
             <div class="swiper-wrapper">
+              @foreach($randomPhotos as $photo)
               <div class="swiper-slide">
                 <div class="gallery-item">
                   <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-3.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-3.webp') }}" class="img-fluid" alt="">
+                    <a class="glightbox" data-gallery="featured-gallery" href="{{ asset($photo->image_path) }}">
+                      <img src="{{ asset($photo->image_path) }}" class="img-fluid" alt="" style="object-fit: cover; height: 350px; width: 100%;">
                       <div class="gallery-overlay">
                         <i class="bi bi-plus-circle"></i>
                       </div>
@@ -82,249 +82,57 @@
                   </div>
                 </div>
               </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-1.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-1.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-5.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-5.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-7.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-7.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-2.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-2.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-4.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-4.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-6.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-6.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="gallery-item">
-                  <div class="gallery-img">
-                    <a class="glightbox" data-gallery="images-gallery" href="assets/img/gallery/gallery-8.webp') }}">
-                      <img src="{{ asset('assets/img/gallery/gallery-8.webp') }}" class="img-fluid" alt="">
-                      <div class="gallery-overlay">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              @endforeach
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
           </div>
         </div>
-
       </div>
-
     </section><!-- /Gallery Slider Section -->
+    @endif
 
     <!-- Gallery Section -->
     <section id="gallery" class="gallery section">
-
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
           <ul class="gallery-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
-            <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-nature">Nature</li>
-            <li data-filter=".filter-architecture">Architecture</li>
-            <li data-filter=".filter-people">People</li>
+            <li data-filter="*" class="filter-active">Semua Album</li>
           </ul>
 
           <div class="row gallery-grid isotope-container" data-aos="fade-up" data-aos-delay="300">
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-nature">
+            @forelse($galleries as $gallery)
+            <div class="col-xl-4 col-md-6 gallery-item isotope-item">
               <div class="gallery-card">
                 <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-1.webp') }}" class="img-fluid" alt="">
+                  <img src="{{ asset($gallery->image_path) }}" class="img-fluid w-100" style="height: 300px; object-fit: cover;" alt="{{ $gallery->title }}">
                 </div>
                 <div class="gallery-overlay">
-                  <h4>Natural Beauty</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                  <h4>{{ $gallery->title ?: 'Tanpa Judul' }}</h4>
+                  <p>{{ $gallery->photos->count() }} Foto</p>
                   <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-1.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
+                    <!-- Album Cover Trigger -->
+                    <a href="{{ asset($gallery->image_path) }}" title="{{ $gallery->title }}" class="glightbox" data-gallery="album-{{ $gallery->id }}">
+                        <i class="bi bi-images"></i> Lihat Album
+                    </a>
+                    
+                    <!-- Hidden gallery photos -->
+                    @foreach($gallery->photos as $photo)
+                        <a href="{{ asset($photo->image_path) }}" title="{{ $gallery->title }}" class="glightbox d-none" data-gallery="album-{{ $gallery->id }}"></a>
+                    @endforeach
                   </div>
                 </div>
               </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-architecture">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-2.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Urban Landscape</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-2.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-people">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-3.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Candid Moments</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-3.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-nature">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-4.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Wilderness</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-4.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-architecture">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-5.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Modern Design</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-5.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-people">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-6.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Portrait Studies</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-6.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-nature">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-7.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Serene Waters</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-7.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
-            <div class="col-xl-3 col-md-4 col-sm-6 gallery-item isotope-item filter-architecture">
-              <div class="gallery-card">
-                <div class="gallery-image">
-                  <img src="{{ asset('assets/img/gallery/gallery-8.webp') }}" class="img-fluid" alt="">
-                </div>
-                <div class="gallery-overlay">
-                  <h4>Historical Places</h4>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                  <div class="gallery-actions">
-                    <a href="assets/img/gallery/gallery-8.webp') }}" title="View Image" class="glightbox"><i class="bi bi-eye"></i></a>
-                    <a href="{{ url('gallery-details') }}"><i class="bi bi-info-circle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Gallery Item -->
-
+            </div><!-- End Gallery Album Item -->
+            @empty
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Belum ada album galeri yang tersedia.</p>
+            </div>
+            @endforelse
           </div>
         </div>
-
       </div>
-
     </section><!-- /Gallery Section -->
 
   </main>

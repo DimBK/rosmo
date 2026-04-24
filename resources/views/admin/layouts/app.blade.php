@@ -85,6 +85,18 @@
                   <p>Media Library</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ route('admin.organization_structures.index') }}" class="nav-link {{ request()->routeIs('admin.organization_structures.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-diagram-3"></i>
+                  <p>Struktur Organisasi</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('admin.employees.index') }}" class="nav-link {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-person-badge"></i>
+                  <p>Data Pegawai (Statistik)</p>
+                </a>
+              </li>
 
               <li class="nav-header">BERITA & POSTINGAN</li>
               <li class="nav-item">
