@@ -63,6 +63,59 @@
                    {!! $news->content !!}
                @endif
             </div>
+
+            <!-- Galeri Foto Berita (Swiper Slider with Lightbox) -->
+            @if($news->photos->count() > 0)
+            <div class="news-gallery-section mt-5 mb-4" data-aos="fade-up">
+              <h3 class="mb-4 d-flex align-items-center" style="font-weight: 700; color: var(--heading-color); font-size: 1.4rem;">
+                <i class="bi bi-images me-2 text-success"></i> Galeri Foto Berita
+              </h3>
+              <div class="swiper init-swiper" style="overflow: hidden; padding-bottom: 30px;">
+                <script type="application/json" class="swiper-config">
+                  {
+                    "loop": true,
+                    "speed": 600,
+                    "autoplay": {
+                      "delay": 4000,
+                      "disableOnInteraction": false
+                    },
+                    "slidesPerView": "auto",
+                    "pagination": {
+                      "el": ".swiper-pagination",
+                      "type": "bullets",
+                      "clickable": true
+                    },
+                    "breakpoints": {
+                      "320": {
+                        "slidesPerView": 1,
+                        "spaceBetween": 15
+                      },
+                      "576": {
+                        "slidesPerView": 2,
+                        "spaceBetween": 15
+                      },
+                      "992": {
+                        "slidesPerView": 3,
+                        "spaceBetween": 20
+                      }
+                    }
+                  }
+                </script>
+                <div class="swiper-wrapper">
+                  @foreach($news->photos as $photo)
+                    <div class="swiper-slide">
+                      <div class="gallery-item-wrapper" style="border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06); height: 220px; border: 1px solid #edf2f7; background: #ffffff; transition: transform 0.3s ease;">
+                        <a href="{{ asset('storage/' . $photo->path) }}" class="glightbox" data-gallery="news-photos-gallery" style="display: block; width: 100%; height: 100%;">
+                          <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto Galeri {{ $news->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </a>
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
+                <div class="swiper-pagination mt-3"></div>
+              </div>
+            </div>
+            @endif
           </div>
 
           <!-- detail share -->

@@ -177,4 +177,42 @@
     });
   });
 
+  /**
+   * Header container animation: hide on scroll down towards the logo, show on logo hover or scroll up (Blog Details Page Only)
+   */
+  const header = document.querySelector('#header');
+  const isBlogDetailsPage = document.body.classList.contains('blog-details-page');
+  if (header && isBlogDetailsPage) {
+    const logo = header.querySelector('.logo');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', function() {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > 100) {
+        if (scrollTop > lastScrollTop) {
+          // Scrolling Down
+          header.classList.add('header-scrolled-down');
+        } else {
+          // Scrolling Up
+          header.classList.remove('header-scrolled-down');
+        }
+      } else {
+        header.classList.remove('header-scrolled-down');
+      }
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    if (logo) {
+      logo.addEventListener('mouseenter', function() {
+        if (header.classList.contains('header-scrolled-down')) {
+          header.classList.add('header-logo-hovered');
+        }
+      });
+    }
+
+    header.addEventListener('mouseleave', function() {
+      header.classList.remove('header-logo-hovered');
+    });
+  }
+
 })();

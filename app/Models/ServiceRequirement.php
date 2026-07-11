@@ -9,7 +9,7 @@ class ServiceRequirement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['parent_id', 'title', 'slug', 'content', 'image', 'status', 'highlights', 'included', 'not_included'];
+    protected $fillable = ['parent_id', 'title', 'slug', 'content', 'image', 'status', 'highlights', 'included', 'not_included', 'regulation_source'];
 
     public function parent()
     {

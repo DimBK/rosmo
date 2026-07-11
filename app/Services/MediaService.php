@@ -14,7 +14,7 @@ class MediaService
     {
         $extension = $file->getClientOriginalExtension();
         $filename = uniqid($prefix . '_') . '.' . $extension;
-        $path = 'public/uploads/' . $filename;
+        $path = 'uploads/' . $filename;
 
         // Check if file is an image
         if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'webp'])) {
@@ -29,14 +29,14 @@ class MediaService
             // Encode to webp for optimization to reduce size
             $encoded = $image->toWebp(quality: 80);
             $filename = uniqid($prefix . '_') . '.webp';
-            $path = 'public/uploads/' . $filename;
+            $path = 'uploads/' . $filename;
             
-            Storage::put($path, $encoded->toString());
+            Storage::disk('public')->put($path, $encoded->toString());
             $fileType = 'image/webp';
             $fileSize = strlen($encoded->toString());
         } else {
             // For other files like icons (svg), videos (mp4), keep original
-            Storage::putFileAs('public/uploads', $file, $filename);
+            Storage::disk('public')->putFileAs('uploads', $file, $filename);
             $fileType = $file->getMimeType();
             $fileSize = $file->getSize();
         }
@@ -44,7 +44,7 @@ class MediaService
         // Save to Database
         return Media::create([
             'file_name' => $file->getClientOriginalName(),
-            'file_path' => str_replace('public/', 'storage/', $path),
+            'file_path' => 'storage/' . $path,
             'file_type' => $fileType,
             'file_size' => explode('.', (string)($fileSize / 1024))[0], // in KB roughly
         ]);

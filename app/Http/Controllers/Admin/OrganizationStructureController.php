@@ -9,10 +9,27 @@ use Illuminate\Support\Facades\Storage;
 
 class OrganizationStructureController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $structures = OrganizationStructure::with('parent')->orderBy('sort_order')->get();
-        return view('admin.organization_structures.index', compact('structures'));
+        $query = OrganizationStructure::query()->with('parent');
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($query) use ($q) {
+                $query->where('position_name', 'like', '%' . $q . '%')
+                      ->orWhere('official_name', 'like', '%' . $q . '%')
+                      ->orWhere('echelon', 'like', '%' . $q . '%');
+            });
+        }
+
+        if ($request->filled('parent_id')) {
+            $query->where('parent_id', $request->parent_id);
+        }
+
+        $structures = $query->orderBy('sort_order')->get();
+        $allParents = OrganizationStructure::orderBy('position_name')->get();
+
+        return view('admin.organization_structures.index', compact('structures', 'allParents'));
     }
 
     public function create()

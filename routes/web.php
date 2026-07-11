@@ -13,7 +13,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/layanan/{service_requirement:slug}', function (App\Models\ServiceRequirement $service_requirement) {
-    return view('pages.tour-details', ['service' => $service_requirement]);
+    return view('pages.news-details', ['service' => $service_requirement]);
 })->name('services.details');
 
 Route::get('/news/{news}', function (News $news) {
@@ -149,7 +149,7 @@ Route::get('/testimonials', function () {
 });
 
 Route::get('/tour-details', function () {
-    return view('pages.tour-details');
+    return redirect()->route('home');
 });
 
 Route::get('/tours', function () {
@@ -166,6 +166,29 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Lapor SDM Routes
+use App\Http\Controllers\ReporterAuthController;
+use App\Http\Controllers\TicketController;
+
+Route::prefix('lapor-sdm')->name('lapor.')->group(function () {
+    Route::middleware('guest:reporter')->group(function () {
+        Route::get('login', [ReporterAuthController::class, 'showLogin'])->name('login');
+        Route::post('login', [ReporterAuthController::class, 'login']);
+        Route::get('register', [ReporterAuthController::class, 'showRegister'])->name('register');
+        Route::post('register', [ReporterAuthController::class, 'register']);
+        Route::view('privacy-policy', 'pages.privacy-policy-lapor')->name('privacy');
+    });
+
+    Route::middleware('auth:reporter')->group(function () {
+        Route::post('logout', [ReporterAuthController::class, 'logout'])->name('logout');
+        Route::get('dashboard', [TicketController::class, 'dashboard'])->name('dashboard');
+        Route::get('ticket/create', [TicketController::class, 'create'])->name('create');
+        Route::post('ticket', [TicketController::class, 'store'])->name('store');
+        Route::get('ticket/{ticket}', [TicketController::class, 'show'])->name('show');
+        Route::post('ticket/{ticket}/reply', [TicketController::class, 'reply'])->name('reply');
+    });
+});
+
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\TagController;
@@ -174,6 +197,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     
     Route::resource('news', NewsController::class);
+    Route::post('news/{news}/toggle-status', [NewsController::class, 'toggleStatus'])->name('news.toggle-status');
     Route::resource('tags', TagController::class)->except(['show']);
     Route::resource('service_requirements', ServiceRequirementController::class)->except(['show']);
     Route::resource('announcements', AnnouncementController::class);
@@ -184,6 +208,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Employee Statistics
     Route::get('employees', [\App\Http\Controllers\Admin\EmployeeController::class, 'index'])->name('employees.index');
     Route::post('employees/import', [\App\Http\Controllers\Admin\EmployeeController::class, 'import'])->name('employees.import');
+    Route::get('employees/download-template-summary', [\App\Http\Controllers\Admin\EmployeeController::class, 'downloadSummaryTemplate'])->name('employees.download_template_summary');
+    Route::post('employees/import-summary', [\App\Http\Controllers\Admin\EmployeeController::class, 'importSummary'])->name('employees.import_summary');
 
     // CMS & Settings
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
@@ -194,8 +220,16 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('galleries.photos', \App\Http\Controllers\Admin\GalleryPhotoController::class)->shallow()->except(['show', 'edit', 'update']);
     Route::resource('media', \App\Http\Controllers\Admin\MediaController::class);
 
+    // Lapor SDM Admin Tickets
+    Route::get('tickets', [\App\Http\Controllers\Admin\TicketManagementController::class, 'index'])->name('tickets.index');
+    Route::get('tickets/{ticket}', [\App\Http\Controllers\Admin\TicketManagementController::class, 'show'])->name('tickets.show');
+    Route::post('tickets/{ticket}/reply', [\App\Http\Controllers\Admin\TicketManagementController::class, 'reply'])->name('tickets.reply');
+    Route::put('tickets/{ticket}/status', [\App\Http\Controllers\Admin\TicketManagementController::class, 'updateStatus'])->name('tickets.status');
+
     // Super Admin Routes
     Route::middleware('role:super_admin')->group(function () {
+        Route::post('users/{user}/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::post('users/{user}/toggle-status', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('users.toggle-status');
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
     });
 });

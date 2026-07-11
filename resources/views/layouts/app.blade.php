@@ -28,7 +28,7 @@
 
 
   <!-- Main CSS File -->
-  <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/css/main.css') }}?v=2.1" rel="stylesheet">
   
   @stack('styles')
 
@@ -46,16 +46,21 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           
-          <li><a href="{{ url('about') }}">Profile</a></li>
+          <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="{{ url('about') }}">Tentang Kami</a></li>
+              <li><a href="{{ route('organization.structure') }}">Struktur Organisasi</a></li>
+              <li><a href="#">Rencana Kerja</a></li>
+              <li><a href="#">Rencana Strategis</a></li>
+              <li><a href="#">Laporan Kinerja</a></li>
+            </ul>
+          </li>
           <li class="dropdown"><a href="#"><span>Informasi Publik</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="#">Peraturan</a></li>
               <li><a href="#">Siaran Pers</a></li>
               <li class="dropdown"><a href="#"><span>Dokumen Publik</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
-                  <li><a href="#">Rencana Kerja</a></li>
-                  <li><a href="#">Rencana Strategis</a></li>
-                  <li><a href="#">Laporan Kinerja</a></li>
                   <li><a href="#">Reformasi Birokrasi</a></li>
                   <li><a href="#">SPIP</a></li>
                   <li><a href="#">Laporan Kepuasan</a></li>
@@ -84,10 +89,11 @@
           </li>
           <li><a href="{{ route('statistik.index') }}" class="{{ request()->routeIs('statistik.*') ? 'active' : '' }}">Statistik</a></li>
           <li><a href="{{ url('blog') }}">Regulasi</a></li>
+          <li><a href="{{ url('gallery') }}" class="{{ request()->is('gallery') ? 'active' : '' }}">Galeri</a></li>
           <li class="dropdown"><a href="#"><span>More Pages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="{{ url('destination-details') }}">Destination Details</a></li>
-              <li><a href="{{ url('tour-details') }}">Tour Details</a></li>
+              <li><a href="{{ url('news-details') }}">News Details</a></li>
               <li><a href="{{ url('booking') }}">Booking</a></li>
               <li><a href="testimonials">Testimonials</a></li>
               <li><a href="{{ url('faq') }}">Frequently Asked Questions</a></li>
@@ -98,6 +104,17 @@
             </ul>
           </li>
           <li><a href="{{ url('contact') }}">Hubungi Kami</a></li>
+          <!-- Mobile Search Item inside Hamburger Menu -->
+          <li class="mobile-search-item d-xl-none p-3 mt-2 border-top">
+            <form action="{{ url('search') }}" method="GET" class="w-100">
+              <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Cari regulasi atau berita..." value="{{ request('q') }}" style="font-size: 14px;">
+                <button type="submit" class="btn btn-success" style="background-color: var(--accent-color); border-color: var(--accent-color);">
+                  <i class="bi bi-search text-white"></i>
+                </button>
+              </div>
+            </form>
+          </li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -217,7 +234,7 @@
   <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
 
   <!-- Main JS File -->
-  <script src="{{ asset('assets/js/main.js') }}"></script>
+  <script src="{{ asset('assets/js/main.js') }}?v=1.1"></script>
   
   @stack('scripts')
 

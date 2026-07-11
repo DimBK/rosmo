@@ -23,8 +23,8 @@
               <h1 class="hero-title">Biro Sumber Daya Manusia dan Organisasi</h1>
               <p class="hero-subtitle">Rosmo hadir untuk menyajikan informasi terkini seputar kepegawaian, kegiatan biro, regulasi, statistik SDM, hingga inovasi layanan digital yang sedang dikembangkan.</p>
               <div class="hero-buttons">
-                <a href="#featured-destinations" class="btn btn-primary me-3">Layanan kami</a>
-                <a href="{{ url('blog') }}" class="btn btn-outline">Berita Terkini</a>
+                <a href="{{ url('blog') }}" class="btn btn-primary me-3">Berita Terkini</a>
+                <a href="#featured-destinations" class="btn btn-outline">Layanan kami</a>
               </div>
             </div>
           </div>
@@ -39,6 +39,63 @@
       </div>
 
     </section><!-- /Travel Hero Section -->
+
+    <!-- Berita -->
+    <section id="featured-tours" class="featured-tours section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>***</h2>
+        <div><span>Berita</span> <span class="description-title">Terkini</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+          @forelse($news as $item)
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{ route('news.details', $item) }}" style="color: inherit; text-decoration: none;">
+              <div class="tour-card" style="font-size: 0.9rem; transform: scale(0.95); margin: -10px;">
+                <div class="tour-image">
+                <img src="{{ $item->image ? asset('storage/'.$item->image) : asset('assets/img/travel/tour-1.webp') }}" alt="{{ $item->title }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;" loading="lazy">
+              </div>
+              <div class="tour-content">
+                <h4>{{ $item->title }}</h4>
+                <div class="tour-meta">
+                  <span class="duration"><i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($item->publish_date ?? $item->created_at)->format('d F Y') }}</span>
+                </div>
+                <p>{{ Str::limit(strip_tags($item->content), 100) }}</p>
+                <div class="tour-highlights d-flex justify-content-between align-items-center mt-3">
+                  <div>
+                    @forelse($item->tags->take(2) as $tag)
+                      <span>{{ $tag->name }}</span>
+                    @empty
+                      <span>Berita</span>
+                    @endforelse
+                  </div>
+                  <span class="text-muted" style="background: none; padding: 0; font-size: 0.85rem;"><i class="bi bi-eye"></i> {{ number_format($item->views) }}</span>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div><!-- End Tour Item -->
+          @empty
+          <div class="col-12 text-center text-muted">
+            <p>Belum ada berita yang diterbitkan.</p>
+          </div>
+          @endforelse
+        </div>
+
+        <!-- Removed pagination as news is limited to 6 on home -->
+
+        <div class="text-center mt-3" data-aos="fade-up" data-aos-delay="500">
+          <a href="{{ url('blog') }}" class="btn-view-all">Cek Berita Lainnya</a>
+        </div>
+
+      </div>
+
+    </section><!-- /Featured Tours Section -->
+
 
     <!-- Featured Destinations Section -->
     <section id="featured-destinations" class="featured-destinations section">
@@ -121,63 +178,6 @@
       </div>
 
     </section><!-- /Featured Destinations Section -->
-
-
-    <!-- Berita -->
-    <section id="featured-tours" class="featured-tours section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>***</h2>
-        <div><span>Berita</span> <span class="description-title">Terkini</span></div>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-          @forelse($news as $item)
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <a href="{{ route('news.details', $item) }}" style="color: inherit; text-decoration: none;">
-              <div class="tour-card" style="font-size: 0.9rem; transform: scale(0.95); margin: -10px;">
-                <div class="tour-image">
-                <img src="{{ $item->image ? asset('storage/'.$item->image) : asset('assets/img/travel/tour-1.webp') }}" alt="{{ $item->title }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="tour-content">
-                <h4>{{ $item->title }}</h4>
-                <div class="tour-meta">
-                  <span class="duration"><i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($item->publish_date ?? $item->created_at)->format('d F Y') }}</span>
-                </div>
-                <p>{{ Str::limit(strip_tags($item->content), 100) }}</p>
-                <div class="tour-highlights d-flex justify-content-between align-items-center mt-3">
-                  <div>
-                    @forelse($item->tags->take(2) as $tag)
-                      <span>{{ $tag->name }}</span>
-                    @empty
-                      <span>Berita</span>
-                    @endforelse
-                  </div>
-                  <span class="text-muted" style="background: none; padding: 0; font-size: 0.85rem;"><i class="bi bi-eye"></i> {{ number_format($item->views) }}</span>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div><!-- End Tour Item -->
-          @empty
-          <div class="col-12 text-center text-muted">
-            <p>Belum ada berita yang diterbitkan.</p>
-          </div>
-          @endforelse
-        </div>
-
-        <!-- Removed pagination as news is limited to 6 on home -->
-
-        <div class="text-center mt-3" data-aos="fade-up" data-aos-delay="500">
-          <a href="{{ url('blog') }}" class="btn-view-all">Cek Berita Lainnya</a>
-        </div>
-
-      </div>
-
-    </section><!-- /Featured Tours Section -->
 
     <!-- Why Us Section -->
     <section id="why-us" class="why-us section">

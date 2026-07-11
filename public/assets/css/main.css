@@ -302,21 +302,24 @@ h6 {
     border-radius: 4px;
     z-index: 99;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+    width: 320px; /* Restrict width for clean layout */
   }
 
   .navmenu .dropdown ul li {
-    min-width: 200px;
+    width: 100%;
   }
 
   .navmenu .dropdown ul a {
-    padding: 10px 20px;
-    font-size: 15px;
+    padding: 7px 20px;
+    font-size: 14px;
     text-transform: none;
     color: var(--nav-dropdown-color);
+    white-space: normal; /* Wrap long text */
+    line-height: 1.4;
   }
 
   .navmenu .dropdown ul a i {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .navmenu .dropdown ul a:hover,
@@ -333,14 +336,14 @@ h6 {
 
   .navmenu .dropdown .dropdown ul {
     top: 0;
-    left: -90%;
+    left: 90%; /* Start slightly inside for smooth slide-out transition to the right */
     visibility: hidden;
   }
 
   .navmenu .dropdown .dropdown:hover>ul {
     opacity: 1;
     top: 0;
-    left: -100%;
+    left: 100%; /* Slide out to the right */
     visibility: visible;
   }
 }
@@ -8765,4 +8768,269 @@ section,
 --------------------------------------------------------------*/
 .starter-section {
   /* Add your styles here */
+}
+
+/*--------------------------------------------------------------
+# Custom Responsive & Soft Detail Pages Design
+--------------------------------------------------------------*/
+body.tour-details-page,
+body.blog-details-page {
+  background-color: #f4f6f9 !important; /* Soft, warm grey background */
+  color: #333333;
+}
+
+/* Compact page titles for details pages */
+.tour-details-page .page-title,
+.blog-details-page .page-title {
+  padding: 120px 0 45px 0 !important;
+}
+
+/* Service Detail Page Layout Customizations */
+.tour-details-page .travel-tour-details.section {
+  background-color: transparent !important;
+  padding: 25px 0 !important; /* Tighter padding to reduce whitespace */
+}
+
+.tour-details-page .tour-overview {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.tour-details-page .tour-overview h2 {
+  font-size: 1.75rem !important;
+  margin-bottom: 12px !important;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.tour-details-page .tour-overview .content-body {
+  font-size: 0.96rem !important;
+  line-height: 1.6 !important;
+  color: #334155;
+}
+
+.tour-details-page .tour-overview .tour-highlights {
+  background: #f8fafc !important;
+  padding: 20px !important;
+  border-radius: 10px !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.tour-details-page .tour-overview .tour-highlights h3 {
+  font-size: 1.1rem !important;
+  margin-bottom: 10px !important;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.tour-details-page .tour-overview .tour-highlights ul li {
+  padding: 5px 0 !important;
+  font-size: 0.9rem !important;
+  color: #475569;
+}
+
+/* Inclusions Card */
+.tour-details-page .tour-inclusions {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  padding: 30px;
+  margin-bottom: 20px !important;
+}
+
+.tour-details-page .tour-inclusions h3 {
+  font-size: 1.15rem !important;
+  margin-bottom: 12px !important;
+  font-weight: 600;
+}
+
+.tour-details-page .tour-inclusions .inclusion-body ol li,
+.tour-details-page .tour-inclusions .exclusion-body ol li {
+  padding: 4px 0;
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+/* News/Blog Detail Page Layout Customizations */
+.blog-details-page .blog-details.section {
+  background-color: transparent !important;
+  padding: 25px 0 !important; /* Tighter padding */
+}
+
+.blog-details-page .article {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+  padding: 30px !important;
+  margin-bottom: 20px !important;
+}
+
+.blog-details-page .article-header {
+  margin-bottom: 1.5rem !important;
+}
+
+.blog-details-page .article-header .title {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.75rem !important;
+  text-align: left !important;
+  color: #1e293b;
+}
+
+.blog-details-page .article-header .meta-categories {
+  text-align: left !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.blog-details-page .article-header .article-meta {
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 1rem;
+}
+
+.blog-details-page .article-featured-image {
+  margin: 0 0 1.5rem 0 !important;
+  height: 380px !important;
+  border-radius: 8px !important;
+}
+
+.blog-details-page .article-wrapper {
+  gap: 1.5rem !important;
+}
+
+.blog-details-page .article-content {
+  font-size: 0.98rem !important;
+  line-height: 1.6 !important;
+  color: #334155;
+  text-align: justify;
+}
+
+.blog-details-page .article-footer {
+  margin-top: 1.5rem !important;
+  border-top: 1px solid #edf2f7;
+  padding-top: 1rem !important;
+}
+
+/*--------------------------------------------------------------
+# Header Animation - Scroll Down and Logo Hover (Blog Details Page Only)
+--------------------------------------------------------------*/
+.blog-details-page .header .header-container {
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease !important;
+}
+
+.blog-details-page .header .logo {
+  transition: background-color 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease, border-radius 0.4s ease, transform 0.4s ease !important;
+}
+
+.blog-details-page .header .navmenu,
+.blog-details-page .header #nav-search-form {
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, visibility 0.4s !important;
+  transform-origin: left center;
+}
+
+/* Scrolled down state (collapsed to logo only) */
+.blog-details-page .header.header-scrolled-down .header-container {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.blog-details-page .header.header-scrolled-down .logo {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  padding: 8px 20px !important;
+  border-radius: 50px !important;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15) !important;
+  transform: translateX(-15px) !important; /* Shift left when collapsed to avoid content overlap */
+}
+
+.blog-details-page .header.header-scrolled-down .navmenu,
+.blog-details-page .header.header-scrolled-down #nav-search-form {
+  opacity: 0 !important;
+  transform: translateX(-40px) scale(0.9) !important;
+  pointer-events: none !important;
+}
+
+/* Hovering logo while scrolled down (expand back to full menu) */
+.blog-details-page .header.header-scrolled-down.header-logo-hovered .header-container {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.15) !important;
+}
+
+.blog-details-page .header.header-scrolled-down.header-logo-hovered .logo {
+  background-color: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  transform: translateX(0) !important; /* Reset shift on hover */
+}
+
+.blog-details-page .header.header-scrolled-down.header-logo-hovered .navmenu,
+.blog-details-page .header.header-scrolled-down.header-logo-hovered #nav-search-form {
+  opacity: 1 !important;
+  transform: translateX(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+
+/* Hide desktop search form on mobile/tablet views where hamburger menu is active */
+@media (max-width: 1199px) {
+  #nav-search-form {
+    display: none !important;
+  }
+}
+
+/* Responsive adjustments for author and metadata on phone view */
+@media (max-width: 576px) {
+  .blog-details .article-header .article-meta {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+  .blog-details .article-header .article-meta .author {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 8px !important;
+  }
+  .blog-details .article-header .article-meta .author .author-info {
+    text-align: center !important;
+  }
+  .blog-details .article-header .article-meta .post-info {
+    justify-content: center !important;
+    width: 100% !important;
+    margin-top: 5px;
+  }
+}
+
+/* News Gallery Zoom Hover */
+.gallery-item-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+}
+
+/* Make all content images responsive (e.g. from CKEditor) */
+.blog-details .article-content img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Blog details featured cover image responsive scaling */
+.blog-details .article-featured-image {
+  margin-bottom: 25px !important;
+  width: 100% !important;
+  height: 380px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+}
+
+.blog-details .article-featured-image img.img-fluid {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+@media (max-width: 768px) {
+  .blog-details .article-featured-image {
+    height: 220px !important;
+  }
 }

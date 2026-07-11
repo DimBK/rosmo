@@ -120,6 +120,12 @@
               @if(auth()->user()->role === 'super_admin')
               <li class="nav-header">ADMINISTRATION</li>
               <li class="nav-item">
+                <a href="{{ route('admin.tickets.index') }}" class="nav-link {{ request()->routeIs('admin.tickets.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-inbox"></i>
+                  <p>Inbox Lapor SDM</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-people"></i>
                   <p>Manajemen Pengguna</p>

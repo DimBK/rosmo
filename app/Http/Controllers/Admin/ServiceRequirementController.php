@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ServiceRequirement;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
 class ServiceRequirementController extends Controller
@@ -23,18 +24,21 @@ class ServiceRequirementController extends Controller
 
     public function store(Request $request)
     {
+        $slug = \Illuminate\Support\Str::slug($request->title);
+        $request->merge(['slug' => $slug]);
+
         $data = $request->validate([
             'title' => 'required',
+            'slug' => 'required|unique:service_requirements,slug',
             'parent_id' => 'nullable|exists:service_requirements,id',
             'content' => 'required',
             'highlights' => 'nullable',
             'included' => 'nullable',
             'not_included' => 'nullable',
             'image' => 'nullable|image',
-            'status' => 'boolean'
+            'status' => 'boolean',
+            'regulation_source' => 'nullable|string'
         ]);
-
-        $data['slug'] = \Illuminate\Support\Str::slug($data['title']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('services', 'public');
@@ -52,18 +56,21 @@ class ServiceRequirementController extends Controller
 
     public function update(Request $request, ServiceRequirement $service_requirement)
     {
+        $slug = \Illuminate\Support\Str::slug($request->title);
+        $request->merge(['slug' => $slug]);
+
         $data = $request->validate([
             'title' => 'required',
+            'slug' => ['required', Rule::unique('service_requirements')->ignore($service_requirement->id)],
             'parent_id' => 'nullable|exists:service_requirements,id',
             'content' => 'required',
             'highlights' => 'nullable',
             'included' => 'nullable',
             'not_included' => 'nullable',
             'image' => 'nullable|image',
-            'status' => 'boolean'
+            'status' => 'boolean',
+            'regulation_source' => 'nullable|string'
         ]);
-
-        $data['slug'] = \Illuminate\Support\Str::slug($data['title']);
 
         if ($request->hasFile('image')) {
             if ($service_requirement->image) Storage::disk('public')->delete($service_requirement->image);

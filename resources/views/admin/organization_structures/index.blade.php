@@ -28,6 +28,36 @@
                 @if(session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
+
+                <!-- Form Pencarian & Filter -->
+                <form action="{{ route('admin.organization_structures.index') }}" method="GET" class="mb-4 bg-light p-3 rounded border">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5">
+                            <label for="q" class="form-label text-sm fw-bold">Kata Kunci</label>
+                            <input type="text" name="q" id="q" value="{{ request('q') }}" class="form-control" placeholder="Cari nama jabatan, pejabat, eselon...">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="parent_id" class="form-label text-sm fw-bold">Atasan</label>
+                            <select name="parent_id" id="parent_id" class="form-select">
+                                <option value="">Semua Atasan</option>
+                                @foreach($allParents as $p)
+                                    <option value="{{ $p->id }}" {{ request('parent_id') == $p->id ? 'selected' : '' }}>
+                                        {{ $p->position_name }} {{ $p->official_name ? '(' . $p->official_name . ')' : '' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100 mb-0">
+                                <i class="bi bi-search"></i> Cari
+                            </button>
+                            <a href="{{ route('admin.organization_structures.index') }}" class="btn btn-outline-secondary w-100 mb-0">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
