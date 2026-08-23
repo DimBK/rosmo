@@ -27,6 +27,7 @@ class NewsController extends Controller
 
     public function toggleStatus(News $news) {
         $news->update(['status' => !$news->status]);
+        $this->syncToGalleryAlbum($news);
         return back()->with('success', 'Status berita berhasil diperbarui!');
     }
     public function create() {

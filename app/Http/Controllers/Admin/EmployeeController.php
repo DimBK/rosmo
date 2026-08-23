@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Setting;
 use App\Models\StatisticSummary;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -100,32 +101,45 @@ class EmployeeController extends Controller
 
             $insertData = [];
             
-            // Start from row 2 assuming row 1 is header
+            $headerRow = $data[1] ?? [];
+            $fieldMapping = $this->mapHeadersToFields($headerRow);
+
             foreach ($data as $index => $row) {
-                if ($index === 1 || empty($row['C']) || empty($row['D'])) {
+                if ($index === 1) {
                     continue;
                 }
 
-                $insertData[] = [
+                $record = [
                     'periode' => $periode,
-                    'umur' => $row['B'] ?? null,
-                    'kelompok_umur' => $row['C'] ?? null,
-                    'jenis_kelamin' => $row['D'] ?? null,
-                    'agama' => $row['E'] ?? null,
-                    'status_pegawai' => $row['F'] ?? null,
-                    'jenis_kantor' => $row['G'] ?? null,
-                    'jenis_jabatan' => $row['H'] ?? null,
-                    'kelompok_fungsional' => $row['I'] ?? null,
-                    'jabatan' => $row['J'] ?? null,
-                    'nama_jabatan' => $row['K'] ?? null,
-                    'jabatan_murni' => $row['L'] ?? null,
-                    'unit_kerja_eselon_1' => $row['M'] ?? null,
-                    'unit_kerja' => $row['N'] ?? null,
-                    'pendidikan' => $row['O'] ?? null,
-                    'golongan' => $row['P'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+
+                $metaData = [];
+
+                foreach ($fieldMapping as $colKey => $field) {
+                    $cellVal = trim((string)($row[$colKey] ?? ''));
+
+                    if (str_starts_with($field, '_meta_')) {
+                        $metaKey = substr($field, 6);
+                        if ($cellVal !== '') {
+                            $metaData[$metaKey] = $cellVal;
+                        }
+                    } else {
+                        $record[$field] = $cellVal !== '' ? $cellVal : null;
+                    }
+                }
+
+                // If record has no kelamin or status_pegawai, skip empty rows
+                if (empty($record['jenis_kelamin']) && empty($record['status_pegawai']) && empty($record['unit_kerja'])) {
+                    continue;
+                }
+
+                // Sanitize record fields against whitelists
+                $record = $this->sanitizeEmployeeRecord($record);
+                $record['meta_data'] = !empty($metaData) ? json_encode($metaData) : null;
+
+                $insertData[] = $record;
 
                 if (count($insertData) >= 1000) {
                     Employee::insert($insertData);
@@ -138,6 +152,7 @@ class EmployeeController extends Controller
             }
 
             DB::commit();
+            Cache::flush();
 
             return redirect()->back()->with('success', "Data detail pegawai periode {$periode} berhasil diimpor.");
 
@@ -634,6 +649,98 @@ class EmployeeController extends Controller
 
         $writer->save('php://output');
         exit;
+    }
+
+    /**
+     * Dynamically map Excel header titles to database fields.
+     */
+    private function mapHeadersToFields(array $headerRow): array
+    {
+        $fieldMapping = [];
+        foreach ($headerRow as $colKey => $headerText) {
+            if (empty($headerText)) continue;
+            $h = strtolower(trim((string)$headerText));
+
+            if (str_contains($h, 'umur') || $h === 'usia') {
+                $fieldMapping[$colKey] = 'umur';
+            } elseif (str_contains($h, 'kel. usia') || str_contains($h, 'kelompok usia')) {
+                $fieldMapping[$colKey] = 'kelompok_umur';
+            } elseif (str_contains($h, 'kelamin') || str_contains($h, 'jk')) {
+                $fieldMapping[$colKey] = 'jenis_kelamin';
+            } elseif (str_contains($h, 'agama')) {
+                $fieldMapping[$colKey] = 'agama';
+            } elseif (str_contains($h, 'jenis asn') || str_contains($h, 'status pegawai') || str_contains($h, 'status asn')) {
+                $fieldMapping[$colKey] = 'status_pegawai';
+            } elseif (str_contains($h, 'lokasi kerja') || str_contains($h, 'jenis kantor')) {
+                $fieldMapping[$colKey] = 'jenis_kantor';
+            } elseif ($h === 'eselon' || str_contains($h, 'jenis jabatan')) {
+                $fieldMapping[$colKey] = 'jenis_jabatan';
+            } elseif (str_contains($h, 'tkt fgs') || str_contains($h, 'kelompok fungsional')) {
+                $fieldMapping[$colKey] = 'kelompok_fungsional';
+            } elseif (str_contains($h, 'jjg fgs') || str_contains($h, 'jenjang')) {
+                $fieldMapping[$colKey] = 'jabatan';
+            } elseif (str_contains($h, 'nama jabatan')) {
+                $fieldMapping[$colKey] = 'nama_jabatan';
+            } elseif (str_contains($h, 'kel fgs') || str_contains($h, 'jabatan murni')) {
+                $fieldMapping[$colKey] = 'jabatan_murni';
+            } elseif (str_contains($h, 'eselon 1') || str_contains($h, 'eselon i')) {
+                $fieldMapping[$colKey] = 'unit_kerja_eselon_1';
+            } elseif (str_contains($h, 'satker') || str_contains($h, 'unit kerja')) {
+                $fieldMapping[$colKey] = 'unit_kerja';
+            } elseif (str_contains($h, 'kedudukan (prop)') || str_contains($h, 'prop') || str_contains($h, 'provinsi')) {
+                $fieldMapping[$colKey] = 'kedudukan_prop';
+            } elseif (str_contains($h, 'kedudukan (kota)') || str_contains($h, 'kota') || str_contains($h, 'kabupaten')) {
+                $fieldMapping[$colKey] = 'kedudukan_kota';
+            } elseif (str_contains($h, 'pddk') || str_contains($h, 'pendidikan')) {
+                $fieldMapping[$colKey] = 'pendidikan';
+            } elseif (str_contains($h, 'gol') || str_contains($h, 'pangkat')) {
+                $fieldMapping[$colKey] = 'golongan';
+            } else {
+                // Unknown future columns are preserved as meta_data!
+                $fieldMapping[$colKey] = '_meta_' . trim((string)$headerText);
+            }
+        }
+        return $fieldMapping;
+    }
+
+    /**
+     * Strict whitelist sanitizer for employee fields.
+     */
+    private function sanitizeEmployeeRecord(array $record): array
+    {
+        $validPendidikan = ['SD', 'SLTP', 'SLTA', 'DII', 'DIII', 'DIV', 'S1', 'S2', 'S3'];
+        $validGolonganPns = ['I/a', 'I/b', 'I/c', 'I/d', 'II/a', 'II/b', 'II/c', 'II/d', 'III/a', 'III/b', 'III/c', 'III/d', 'IV/a', 'IV/b', 'IV/c', 'IV/d', 'IV/e'];
+        $validGolonganPppk = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII'];
+
+        // Validate pendidikan
+        $pend = strtoupper(trim((string)($record['pendidikan'] ?? '')));
+        $record['pendidikan'] = in_array($pend, $validPendidikan) ? $pend : null;
+
+        // Validate golongan
+        $gol = trim((string)($record['golongan'] ?? ''));
+        $record['golongan'] = (in_array(strtoupper($gol), $validGolonganPppk) || in_array($gol, $validGolonganPns)) ? $gol : null;
+
+        // Validate status_pegawai
+        $status = trim((string)($record['status_pegawai'] ?? ''));
+        if (str_contains(strtolower($status), 'paruh')) {
+            $record['status_pegawai'] = 'PPPK Paruh Waktu';
+        } elseif (str_contains(strtoupper($status), 'PPPK')) {
+            $record['status_pegawai'] = 'PPPK';
+        } elseif (str_contains(strtoupper($status), 'CPNS')) {
+            $record['status_pegawai'] = 'CPNS';
+        } elseif (str_contains(strtoupper($status), 'PNS')) {
+            $record['status_pegawai'] = 'PNS';
+        }
+
+        // Validate jenis_kelamin
+        $jk = trim((string)($record['jenis_kelamin'] ?? ''));
+        if (str_starts_with(strtolower($jk), 'l')) {
+            $record['jenis_kelamin'] = 'Laki-laki';
+        } elseif (str_starts_with(strtolower($jk), 'p')) {
+            $record['jenis_kelamin'] = 'Perempuan';
+        }
+
+        return $record;
     }
 
     private function saveSummary($periode, $category, $data)

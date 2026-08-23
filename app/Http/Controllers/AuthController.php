@@ -9,6 +9,7 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
+        $this->refreshCaptcha();
         return view('auth.login');
     }
 
@@ -17,17 +18,31 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'captcha' => ['required', 'integer'],
         ]);
+
+        if ($request->input('captcha') != session('captcha_answer')) {
+            $this->refreshCaptcha();
+            return back()->withErrors([
+                'captcha' => 'Jawaban captcha salah. Silakan coba lagi.',
+            ])->onlyInput('email');
+        }
 
         $user = \App\Models\User::where('email', $credentials['email'])->first();
 
         if ($user && !$user->is_active) {
+            $this->refreshCaptcha();
             return back()->withErrors([
                 'email' => 'Akun Anda telah dinonaktifkan. Hubungi Super Admin.',
             ])->onlyInput('email');
         }
 
-        if (Auth::attempt($credentials)) {
+        $loginCredentials = [
+            'email' => $credentials['email'],
+            'password' => $credentials['password']
+        ];
+
+        if (Auth::attempt($loginCredentials)) {
             $request->session()->regenerate();
             
             \App\Models\ActivityLog::create([
@@ -36,8 +51,12 @@ class AuthController extends Controller
                 'ip_address' => $request->ip(),
             ]);
 
-            return redirect()->intended('/admin');
+            session()->forget(['captcha_text', 'captcha_answer']);
+
+            return redirect()->intended('/admin/dashboard');
         }
+
+        $this->refreshCaptcha();
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -52,5 +71,30 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    public function refreshCaptcha()
+    {
+        $num1 = rand(1, 9);
+        $num2 = rand(1, 9);
+        $operators = ['+', '-'];
+        $operator = $operators[array_rand($operators)];
+        
+        if ($operator === '-') {
+            if ($num1 < $num2) {
+                $temp = $num1;
+                $num1 = $num2;
+                $num2 = $temp;
+            }
+            $answer = $num1 - $num2;
+        } else {
+            $answer = $num1 + $num2;
+        }
+
+        session(['captcha_text' => "$num1 $operator $num2", 'captcha_answer' => $answer]);
+
+        if (request()->ajax()) {
+            return response()->json(['captcha' => session('captcha_text')]);
+        }
     }
 }
